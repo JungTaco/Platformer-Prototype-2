@@ -18,7 +18,7 @@ public class PlayerMovementController : MonoBehaviour
 	private float gravity = -9.8f;
 	private float groundedGravity = -.05f;
 	private float initialJumpVelocity;
-	private float maxJumpHeight = 4f;
+	private float maxJumpHeight = 3f;
 	private float maxJumpTime = .75f;
 	private float fallMultiplier = 2f;
 
@@ -34,10 +34,16 @@ public class PlayerMovementController : MonoBehaviour
 	private int isWalkingHash;
 	private int isRunningHash;
 	private int isJumpingHash;
+	private int jumpCountHash;
 	private int jumpCount = 0;
 
+	//private List<float> initialJumpVelocities = new List<float>();
+	//private List<float> jumpGravities = new List<float>();
 	private Dictionary<int, float> initialJumpVelocities = new Dictionary<int, float>();
 	private Dictionary<int, float> jumpGravities = new Dictionary<int, float>();
+
+
+	private Coroutine currentJumpResetRoutine = null;
 
 	private void OnEnable()
 	{
@@ -58,6 +64,7 @@ public class PlayerMovementController : MonoBehaviour
 		isWalkingHash = Animator.StringToHash("isWalking");
 		isRunningHash = Animator.StringToHash("isRunning");
 		isJumpingHash = Animator.StringToHash("isJumping");
+		jumpCountHash = Animator.StringToHash("jumpCount");
 
 		platerControls.Player.Move.started += OnMovementInput;
 		platerControls.Player.Move.canceled += OnMovementInput;
@@ -75,10 +82,10 @@ public class PlayerMovementController : MonoBehaviour
 		float timeToApex = maxJumpTime / 2;
 		gravity = (-2 * maxJumpHeight)/Mathf.Pow(timeToApex, 2);
 		initialJumpVelocity = (2 * maxJumpHeight) / timeToApex;
-		float secondJumpGravity = (-2 * (maxJumpHeight + 2)) / Mathf.Pow((timeToApex * 1.25f), 2);
-		float secondJumpInitialVelocity = (2 * (maxJumpHeight + 2)) / timeToApex * 1.25f;
-		float thirdJumpGravity = (-2 * (maxJumpHeight + 4)) / Mathf.Pow((timeToApex * 1.5f), 2);
-		float thirdJumpInitialVelocity = (2 * (maxJumpHeight + 4)) / timeToApex * 1.5f;
+		float secondJumpGravity = (-2 * (maxJumpHeight * 1.05f)) / Mathf.Pow((timeToApex * 1.05f), 2);
+		float secondJumpInitialVelocity = (2 * (maxJumpHeight * 1.05f)) / timeToApex * 1.05f;
+		float thirdJumpGravity = (-2 * (maxJumpHeight * 1.1f)) / Mathf.Pow((timeToApex * 1.25f), 2);
+		float thirdJumpInitialVelocity = (2 * (maxJumpHeight * 1.1f)) / timeToApex * 1.25f;
 
 		jumpGravities.Add(0, gravity);
 		jumpGravities.Add(1, gravity);
@@ -87,7 +94,7 @@ public class PlayerMovementController : MonoBehaviour
 
 		initialJumpVelocities.Add(1, initialJumpVelocity);
 		initialJumpVelocities.Add(2, secondJumpInitialVelocity);
-		initialJumpVelocities.Add(2, thirdJumpInitialVelocity);
+		initialJumpVelocities.Add(3, thirdJumpInitialVelocity);
 	}
 
 	private void OnMovementInput(InputAction.CallbackContext context)
@@ -158,7 +165,12 @@ public class PlayerMovementController : MonoBehaviour
 			{
 				animator.SetBool(isJumpingHash, false);
 				isJumpAnimating = false;
-				StartCoroutine(JumpResetRoutine());
+				currentJumpResetRoutine = StartCoroutine(JumpResetRoutine());
+				if (jumpCount >=3)
+				{
+					jumpCount = 0;
+					animator.SetInteger(jumpCountHash, jumpCount); 
+				}
 			}
 			currentMovement.y = groundedGravity * Time.deltaTime;
 			currentRunMovement.y = groundedGravity * Time.deltaTime;
@@ -185,12 +197,18 @@ public class PlayerMovementController : MonoBehaviour
 	{
 		if (!isJumping && characterController.isGrounded && isJumpPressed)
 		{
+			if (jumpCount < 3 && currentJumpResetRoutine != null)
+			{
+				StopCoroutine(JumpResetRoutine());
+				currentJumpResetRoutine = null;
+			}
 			animator.SetBool(isJumpingHash, true);
 			isJumping = true;
 			isJumpAnimating = true;
 			jumpCount += 1;
+			animator.SetInteger(jumpCountHash, jumpCount);
 			currentMovement.y = initialJumpVelocities[jumpCount] * .5f;
-			currentRunMovement.y = initialJumpVelocities[jumpCount] * .5f;
+			currentRunMovement.y = initialJumpVelocities[jumpCount] * .5f;			
 		}
 		else if (isJumping && characterController.isGrounded && !isJumpPressed)
 		{
@@ -200,8 +218,9 @@ public class PlayerMovementController : MonoBehaviour
 
 	IEnumerator JumpResetRoutine()
 	{
-		yield return new WaitForSeconds(.5f);
+		yield return new WaitForSeconds(1.5f);
 		jumpCount = 0;
+		animator.SetInteger(jumpCountHash, jumpCount);
 	}
 
 	void Update()
