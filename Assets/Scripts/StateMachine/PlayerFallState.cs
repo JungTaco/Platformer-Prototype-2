@@ -1,0 +1,57 @@
+using UnityEngine;
+
+public class PlayerFallState : PlayerBaseState
+{
+	public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
+	{ 
+		IsRootState = true;
+		InitializeSubState();
+	}
+
+	public override void CheckSwitchStates()
+	{
+		if (Ctx.CharacterController.isGrounded)
+		{
+			SwitchState(Factory.Grounded());
+		}
+	}
+
+	public override void EnterState()
+	{
+
+	}
+
+	public override void ExitState()
+	{
+
+	}
+
+	public override void InitializeSubState()
+	{
+		if (!Ctx.IsMovementPressed && !Ctx.isRunPressed)
+		{
+			SetSubState(Factory.Idle());
+		}
+		else if (Ctx.IsMovementPressed && !Ctx.isRunPressed)
+		{
+			SetSubState(Factory.Walk());
+		}
+		else
+		{
+			SetSubState(Factory.Run());
+		}
+	}
+
+	public override void UpdateState()
+	{
+		CheckSwitchStates();
+		HandleGravity();
+	}
+
+	private void HandleGravity()
+	{
+		float previousYVelocity = Ctx.CurrentMovementY;
+		Ctx.CurrentMovementY = Ctx.CurrentMovementY + Ctx.Gravity * Time.deltaTime;
+		Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY)*.5f, -20f);
+	}
+}
