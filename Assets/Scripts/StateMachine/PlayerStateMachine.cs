@@ -15,6 +15,7 @@ public class PlayerStateMachine : MonoBehaviour
 	public int IsWalkingHash { get { return _isWalkingHash; } }
 	public int IsRunningHash { get { return _isRunningHash; } }
 	public int JumpCountHash { get { return _jumpCountHash; } }
+	public int IsFallingHash { get { return _isFallingHash; } }
 	public bool RequiresNewJumpPress { get { return _requiresNewJumpPress; } set{ _requiresNewJumpPress = value; } }
 	public bool IsJumping { set{ _isJumping = value; } }
 	public bool IsJumpPressed { get { return _isJumpPressed; } }
@@ -58,6 +59,7 @@ public class PlayerStateMachine : MonoBehaviour
 	private int _isRunningHash;
 	private int _isJumpingHash;
 	private int _jumpCountHash;
+	private int _isFallingHash;
 	private int _jumpCount = 0;
 
 	//private List<float> initialJumpVelocities = new List<float>();
@@ -94,6 +96,7 @@ public class PlayerStateMachine : MonoBehaviour
 		_isRunningHash = Animator.StringToHash("isRunning");
 		_isJumpingHash = Animator.StringToHash("isJumping");
 		_jumpCountHash = Animator.StringToHash("jumpCount");
+		_isFallingHash = Animator.StringToHash("isFalling");
 
 		_platerControls.Player.Move.started += OnMovementInput;
 		_platerControls.Player.Move.canceled += OnMovementInput;

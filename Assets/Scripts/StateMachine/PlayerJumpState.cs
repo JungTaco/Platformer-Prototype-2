@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PlayerJumpState : PlayerBaseState
+public class PlayerJumpState : PlayerBaseState, IRootState
 {
 	public PlayerJumpState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
 	{
@@ -74,7 +74,7 @@ public class PlayerJumpState : PlayerBaseState
 		Ctx.AppliedMovementY = Ctx.InitialJumpVelocities[Ctx.JumpCount];
 	}
 
-	private void HandleGravity()
+	public void HandleGravity()
 	{
 		bool isFalling = Ctx.CurrentMovementY <= 0f || !Ctx.IsJumpPressed;
 

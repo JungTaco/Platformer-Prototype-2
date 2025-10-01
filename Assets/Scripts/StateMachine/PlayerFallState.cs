@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerFallState : PlayerBaseState
+public class PlayerFallState : PlayerBaseState, IRootState
 {
 	public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
 	{ 
@@ -18,12 +18,12 @@ public class PlayerFallState : PlayerBaseState
 
 	public override void EnterState()
 	{
-
+		Ctx.Animator.SetBool(Ctx.IsFallingHash, true);
 	}
 
 	public override void ExitState()
 	{
-
+		Ctx.Animator.SetBool(Ctx.IsFallingHash, false);
 	}
 
 	public override void InitializeSubState()
@@ -48,7 +48,7 @@ public class PlayerFallState : PlayerBaseState
 		HandleGravity();
 	}
 
-	private void HandleGravity()
+	public void HandleGravity()
 	{
 		float previousYVelocity = Ctx.CurrentMovementY;
 		Ctx.CurrentMovementY = Ctx.CurrentMovementY + Ctx.Gravity * Time.deltaTime;

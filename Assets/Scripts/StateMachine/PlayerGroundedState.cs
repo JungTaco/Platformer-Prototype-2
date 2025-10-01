@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerGroundedState : PlayerBaseState
+public class PlayerGroundedState : PlayerBaseState, IRootState
 {
 	public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
 	{
@@ -22,13 +22,18 @@ public class PlayerGroundedState : PlayerBaseState
 
 	public override void EnterState()
 	{
-		Ctx.CurrentMovementY = Ctx.GroundedGravity * Time.deltaTime;
-		Ctx.AppliedMovementY = Ctx.GroundedGravity * Time.deltaTime;
+		HandleGravity();
 	}
 
 	public override void ExitState()
 	{
 		
+	}
+
+	public void HandleGravity()
+	{
+		Ctx.CurrentMovementY = Ctx.GroundedGravity * Time.deltaTime;
+		Ctx.AppliedMovementY = Ctx.GroundedGravity * Time.deltaTime;
 	}
 
 	public override void InitializeSubState()
@@ -50,6 +55,5 @@ public class PlayerGroundedState : PlayerBaseState
 	public override void UpdateState()
 	{
 		CheckSwitchStates();
-		//Debug.Log("grounded state: " + Ctx.CharacterController.isGrounded);
 	}
 }
