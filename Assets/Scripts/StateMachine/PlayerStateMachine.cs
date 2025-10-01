@@ -39,7 +39,7 @@ public class PlayerStateMachine : MonoBehaviour
 	[SerializeField]
 	private float _runMultiplier = 3.0f;
 	private float _gravity = -9.8f;
-	private float _groundedGravity = -50f;
+	private float _groundedGravity = -500f;
 	private float _initialJumpVelocity;
 	private float _maxJumpHeight = 2f;
 	private float _maxJumpTime = .75f;
@@ -169,7 +169,7 @@ public class PlayerStateMachine : MonoBehaviour
 
 	private void Start()
 	{
-		//_characterController.Move(_appliedMovement * Time.deltaTime);
+		_characterController.Move(_appliedMovement * Time.deltaTime);
 	}
 
 	private void Update()
@@ -177,5 +177,6 @@ public class PlayerStateMachine : MonoBehaviour
 		HandleRotation();	
 		_characterController.Move(_appliedMovement * Time.deltaTime);
 		_currentState.UpdateStates();
+		//Debug.Log(CharacterController.isGrounded);
 	}
 }

@@ -19,6 +19,7 @@ public class PlayerFallState : PlayerBaseState, IRootState
 	{
 		InitializeSubState();
 		Ctx.Animator.SetBool(Ctx.IsFallingHash, true);
+		Debug.Log("FALLING");
 	}
 
 	public override void ExitState()
