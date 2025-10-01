@@ -4,8 +4,7 @@ public class PlayerGroundedState : PlayerBaseState, IRootState
 {
 	public PlayerGroundedState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
 	{
-		IsRootState = true;
-		InitializeSubState();
+		IsRootState = true;	
 	}
 
 	public override void CheckSwitchStates()
@@ -22,6 +21,7 @@ public class PlayerGroundedState : PlayerBaseState, IRootState
 
 	public override void EnterState()
 	{
+		InitializeSubState();
 		HandleGravity();
 	}
 

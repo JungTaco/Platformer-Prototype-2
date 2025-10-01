@@ -5,7 +5,6 @@ public class PlayerFallState : PlayerBaseState, IRootState
 	public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
 	{ 
 		IsRootState = true;
-		InitializeSubState();
 	}
 
 	public override void CheckSwitchStates()
@@ -18,6 +17,7 @@ public class PlayerFallState : PlayerBaseState, IRootState
 
 	public override void EnterState()
 	{
+		InitializeSubState();
 		Ctx.Animator.SetBool(Ctx.IsFallingHash, true);
 	}
 
@@ -44,8 +44,8 @@ public class PlayerFallState : PlayerBaseState, IRootState
 
 	public override void UpdateState()
 	{
-		CheckSwitchStates();
 		HandleGravity();
+		CheckSwitchStates();
 	}
 
 	public void HandleGravity()

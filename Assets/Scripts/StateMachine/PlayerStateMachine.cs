@@ -109,6 +109,7 @@ public class PlayerStateMachine : MonoBehaviour
 		SetupJumpVariables();
 	}
 
+	//TODO: move
 	private void SetupJumpVariables()
 	{
 		float timeToApex = _maxJumpTime / 2;
@@ -164,6 +165,11 @@ public class PlayerStateMachine : MonoBehaviour
 			Quaternion targetRotation = Quaternion.LookRotation(positionToLookAt);
 			transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, _rotationFactorPerFrame * Time.deltaTime);
 		}
+	}
+
+	private void Start()
+	{
+		//_characterController.Move(_appliedMovement * Time.deltaTime);
 	}
 
 	private void Update()
