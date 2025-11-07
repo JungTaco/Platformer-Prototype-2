@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerFallState : PlayerBaseState, IRootState
 {
 	public PlayerFallState(PlayerStateMachine currentContext, PlayerStateFactory factory) : base(currentContext, factory)
-	{ 
+	{
 		IsRootState = true;
 	}
 
@@ -19,7 +19,6 @@ public class PlayerFallState : PlayerBaseState, IRootState
 	{
 		InitializeSubState();
 		Ctx.Animator.SetBool(Ctx.IsFallingHash, true);
-		Debug.Log("FALLING");
 	}
 
 	public override void ExitState()
@@ -53,6 +52,6 @@ public class PlayerFallState : PlayerBaseState, IRootState
 	{
 		float previousYVelocity = Ctx.CurrentMovementY;
 		Ctx.CurrentMovementY = Ctx.CurrentMovementY + Ctx.Gravity * Time.deltaTime;
-		Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY)*.5f, -20f);
+		Ctx.AppliedMovementY = Mathf.Max((previousYVelocity + Ctx.CurrentMovementY) * .5f, -20f);
 	}
 }

@@ -166,7 +166,7 @@ public class PlayerMovementController : MonoBehaviour
 				_animator.SetBool(_isJumpingHash, false);
 				_isJumpAnimating = false;
 				_currentJumpResetRoutine = StartCoroutine(JumpResetRoutine());
-				if (_jumpCount >=3)
+				if (_jumpCount == 3)
 				{
 					_jumpCount = 0;
 					_animator.SetInteger(_jumpCountHash, _jumpCount); 
