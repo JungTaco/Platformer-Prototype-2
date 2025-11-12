@@ -13,7 +13,7 @@ public class Gem : MonoBehaviour
         transform.Rotate(0, rotateSpeed * Time.deltaTime, 0, Space.World);
     }
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnTriggerEnter(Collider collider)
 	{
         //collectSound.Play();
         Destroy(gameObject);
