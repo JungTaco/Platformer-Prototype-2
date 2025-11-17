@@ -24,6 +24,7 @@ public class PlayerStateMachine : MonoBehaviour
 	public float GroundedGravity { get { return _groundedGravity; } }
 	public float Gravity { get { return _gravity; } }
 	public float FallMultiplier { get { return _fallMultiplier; } }
+	public float WalkMultiplier { get { return _walkMultiplier; } }
 	public float RunMultiplier { get { return _runMultiplier; } }
 	public float CurrentMovementY { get { return _currentMovement.y; } set { _currentMovement.y = value; } }
 	public float AppliedMovementY { get { return _appliedMovement.y; } set { _appliedMovement.y = value; } }
@@ -37,6 +38,8 @@ public class PlayerStateMachine : MonoBehaviour
 	[SerializeField]
 	private float _rotationFactorPerFrame = 15.0f;
 	[SerializeField]
+	private float _walkMultiplier = 2.0f;
+	[SerializeField]
 	private float _runMultiplier = 3.0f;
 	private float _gravity = -9.8f;
 	private float _groundedGravity = -500f;
@@ -47,7 +50,6 @@ public class PlayerStateMachine : MonoBehaviour
 
 	private Vector2 _currentMovementInput;
 	private Vector3 _currentMovement;
-	private Vector3 _currentRunMovement;
 	private Vector3 _appliedMovement;
 	private Vector3 _cameraRelativeMovement;
 	private bool _isMovementPressed;
@@ -110,7 +112,6 @@ public class PlayerStateMachine : MonoBehaviour
 		SetupJumpVariables();
 	}
 
-	//TODO: move
 	private void SetupJumpVariables()
 	{
 		float timeToApex = _maxJumpTime / 2;
@@ -136,8 +137,6 @@ public class PlayerStateMachine : MonoBehaviour
 		_currentMovementInput = context.ReadValue<Vector2>();
 		_currentMovement.x = _currentMovementInput.x;
 		_currentMovement.z = _currentMovementInput.y;
-		_currentRunMovement.x = _currentMovementInput.x * _runMultiplier;
-		_currentRunMovement.z = _currentMovementInput.y * _runMultiplier;
 		_isMovementPressed = _currentMovement.x != 0 || _currentMovement.z != 0;
 	}
 

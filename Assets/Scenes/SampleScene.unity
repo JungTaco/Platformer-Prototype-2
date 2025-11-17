@@ -3275,6 +3275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationFactorPerFrame: 15
+  _walkMultiplier: 2
   _runMultiplier: 3
 --- !u!1 &1576841470
 GameObject:
