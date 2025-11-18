@@ -1,21 +1,10 @@
 using UnityEngine;
 
-public class Gem : MonoBehaviour
+public class Gem : Collectible
 {
-    [SerializeField] 
-    private int rotateSpeed = 2;
-    //[SerializeField]
-    //private AudioSource collectSound;
-
-	// Update is called once per frame
-	void Update()
-    {
-        transform.Rotate(0, rotateSpeed * Time.deltaTime, 0, Space.World);
-    }
-
-	private void OnTriggerEnter(Collider collider)
+	private void Awake()
 	{
-        //collectSound.Play();
-        Destroy(gameObject);
+		_rotateSpeed = 50;
+		_score = 5;
 	}
 }
