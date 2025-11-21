@@ -1,27 +1,29 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
 public abstract class Collectible : MonoBehaviour
 {
 	public static Action<int> OnCollectedTest;
 	protected int _rotateSpeed;
-	private AudioSource collectSound;
 	protected int _score;
+	private GameObject _camera;
+	
+	[SerializeField]
+	protected AudioClip _clip;
 
 	private void OnTriggerEnter(Collider collider)
 	{
 		if(collider.gameObject.tag == "Player")
 		{
+			AudioSource.PlayClipAtPoint(_clip, _camera.transform.position, 1);
 			Destroy(gameObject);
-			collectSound.Play();
 			OnCollectedTest?.Invoke(_score);
 		}	
 	}
 
-	private void Awake()
+	protected void Init()
 	{
-		collectSound = GetComponent<AudioSource>();
+		_camera = GameObject.FindGameObjectWithTag("MainCamera");
 	}
 
 	void Update()
