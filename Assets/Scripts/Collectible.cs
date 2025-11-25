@@ -3,7 +3,7 @@ using UnityEngine;
 
 public abstract class Collectible : MonoBehaviour
 {
-	public static Action<int> OnCollectedTest;
+	public static Action<int> OnCollected;
 	protected int _rotateSpeed;
 	protected int _score;
 	private GameObject _camera;
@@ -17,7 +17,7 @@ public abstract class Collectible : MonoBehaviour
 		{
 			AudioSource.PlayClipAtPoint(_clip, _camera.transform.position, 1);
 			Destroy(gameObject);
-			OnCollectedTest?.Invoke(_score);
+			OnCollected?.Invoke(_score);
 		}	
 	}
 

@@ -5,37 +5,41 @@ using UnityEngine;
 
 public class ScoreHandler : MonoBehaviour
 {
-	private int score;
-	private List<int> scoreList;
+	public static Action<int> OnScoreChanged;
+
+	private static int _score;
+	private List<int> _scoreList;
+
+	public static int Score { get { return _score; } }
 
 	private void OnEnable()
 	{
-		Collectible.OnCollectedTest += PointCollected;
+		Collectible.OnCollected += PointCollected;
 		// ...+=SaveScoretoList;
 	}
 
 	private void OnDisable()
 	{
-		Collectible.OnCollectedTest -= PointCollected;
+		Collectible.OnCollected -= PointCollected;
 		// ...-=SaveScoretoList;
 	}
 
 	void Start()
     {
 		DontDestroyOnLoad(this);
-		score = 0;
-		scoreList = new List<int>();
+		_score = 0;
+		_scoreList = new List<int>();
 	}
 
     private void PointCollected(int receivedScore)
 	{
-		score += receivedScore;
-		Debug.Log(score);
+		_score += receivedScore;
+		OnScoreChanged?.Invoke(_score);
 	}
 
 	private void SaveScoretoList()
 	{
-		scoreList.Add(score);
-		score = 0;
+		_scoreList.Add(_score);
+		_score = 0;
 	}
 }
