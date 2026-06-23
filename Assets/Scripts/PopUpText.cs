@@ -33,9 +33,9 @@ public class PopUpText : MonoBehaviour
 		}
 	}
 
-	public PopUpText Create(Vector3 position, int amount)
+	public PopUpText Create(Vector3 position, Quaternion rotation, int amount)
 	{
-		Transform PopUpTransform = Instantiate(_prefabPopUpText, position, Quaternion.identity);
+		Transform PopUpTransform = Instantiate(_prefabPopUpText, position, rotation);
 		PopUpText PopUpText = PopUpTransform.GetComponent<PopUpText>();
 		PopUpText.Setup(amount);
 		return PopUpText;
